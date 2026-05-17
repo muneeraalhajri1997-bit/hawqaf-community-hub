@@ -36,7 +36,7 @@ export function Header() {
         {/* Logo */}
         <Link to="/" className="flex items-center shrink-0" aria-label="جمعية الأوقاف الصحية">
           <img src="/logo-full.png" alt="جمعية الأوقاف الصحية" className="hidden md:block w-auto" style={{ height: "48px" }} />
-          <img src="/logo-icon.png" alt="جمعية الأوقاف الصحية" className="block md:hidden w-auto" style={{ height: "40px" }} />
+          <img src="/logo-full.png" alt="جمعية الأوقاف الصحية" className="block md:hidden w-auto" style={{ height: "40px" }} />
         </Link>
 
         {/* Desktop Nav */}
