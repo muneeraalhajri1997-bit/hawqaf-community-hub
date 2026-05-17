@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { HandHeart, Heart, Sparkles } from "lucide-react";
+import { HandHeart, Users, Sparkles } from "lucide-react";
 import { PageHeader } from "@/components/site/PageHeader";
 
 export const Route = createFileRoute("/volunteer")({
@@ -24,7 +24,7 @@ function VolunteerPage() {
           <div className="space-y-6">
             {[
               { Icon: HandHeart, title: "أثر ملموس", desc: "كل ساعة تطوع تصنع فرقاً حقيقياً في حياة المرضى والمحتاجين." },
-              { Icon: Heart, title: "تجربة إنسانية", desc: "بيئة عمل ملهمة مع نخبة من المتطوعين والمختصين." },
+              { Icon: Users, title: "تجربة إنسانية", desc: "بيئة عمل ملهمة مع نخبة من المتطوعين والمختصين." },
               { Icon: Sparkles, title: "شهادات وتقدير", desc: "نوثق ساعات التطوع ونمنح شهادات معتمدة لكل متطوع." },
             ].map((b, i) => (
               <motion.div key={b.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}

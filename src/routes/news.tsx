@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { HeartPulse } from "lucide-react";
+
 import { PageHeader } from "@/components/site/PageHeader";
 
 export const Route = createFileRoute("/news")({
@@ -32,7 +32,7 @@ function NewsPage() {
             <motion.article key={n.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
               className="overflow-hidden rounded-2xl border border-border bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl">
               <div className="flex h-44 items-center justify-center bg-gradient-hero">
-                <HeartPulse className="h-20 w-20 text-accent/60" strokeWidth={1.2} />
+                <img src="/logo-icon.png" alt="" className="h-20 w-20 object-contain opacity-70" />
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-3 text-xs">
