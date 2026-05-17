@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, HeartPulse, Globe } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 
 const NAV = [
   { to: "/", label: "الرئيسية" },
@@ -34,16 +34,9 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-6">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-brand text-white shadow-md">
-            <HeartPulse className="h-5 w-5" />
-          </div>
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-extrabold text-primary md:text-base">
-              جمعية الأوقاف الصحية
-            </span>
-            <span className="text-[10px] text-muted-foreground">Health Endowments Association</span>
-          </div>
+        <Link to="/" className="flex items-center shrink-0" aria-label="جمعية الأوقاف الصحية">
+          <img src="/logo-full.png" alt="جمعية الأوقاف الصحية" className="hidden md:block w-auto" style={{ height: "48px" }} />
+          <img src="/logo-icon.png" alt="جمعية الأوقاف الصحية" className="block md:hidden w-auto" style={{ height: "40px" }} />
         </Link>
 
         {/* Desktop Nav */}

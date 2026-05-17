@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Twitter, Instagram, Youtube, MapPin, Mail, Phone, HeartPulse } from "lucide-react";
+import { Twitter, Instagram, Youtube, MapPin, Mail, Phone } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,11 +8,8 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Col 1 */}
           <div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-brand">
-                <HeartPulse className="h-5 w-5" />
-              </div>
-              <span className="text-base font-extrabold">جمعية الأوقاف الصحية</span>
+            <div className="inline-flex items-center rounded-2xl bg-white px-4 py-3 shadow-sm">
+              <img src="/logo-full.png" alt="جمعية الأوقاف الصحية" className="w-auto" style={{ height: "56px" }} />
             </div>
             <p className="mt-4 text-sm leading-relaxed text-white/75">
               أول جمعية صحية وقفية في المملكة العربية السعودية، تسعى لإقامة مشاريع صحية وقفية مستدامة تخدم المرضى والمحتاجين.
