@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import {
-  ChevronLeft, ChevronRight, HeartPulse, Stethoscope, Building2,
+  ChevronLeft, ChevronRight, Activity, Stethoscope, Building2,
   TrendingUp, Users, Award, Calendar, Shield, ArrowLeft,
 } from "lucide-react";
 
@@ -21,7 +21,7 @@ const SLIDES = [
     badge: "جمعية وقفية",
     title: "معاً نبني مستقبلاً صحياً مستداماً",
     desc: "جمعية الأوقاف الصحية — أول جمعية صحية وقفية في المملكة",
-    Icon: HeartPulse,
+    Icon: Activity,
   },
   {
     badge: "مسار وقفي",
@@ -213,8 +213,8 @@ function AboutSection() {
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="rounded-2xl bg-white p-8 shadow-sm">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-brand text-white">
-              <HeartPulse className="h-6 w-6" />
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-border">
+              <img src="/logo-icon.png" alt="" className="h-8 w-8 object-contain" />
             </div>
             <h3 className="text-xl font-bold">رسالتنا</h3>
             <p className="mt-3 text-foreground/75 leading-relaxed">
@@ -229,7 +229,7 @@ function AboutSection() {
 
 const PROGRAMS = [
   { title: "أوقاف تقدم الخدمات العلاجية", desc: "توفير الرعاية الصحية المباشرة للمرضى والمحتاجين عبر شبكة من الشركاء.", Icon: Stethoscope },
-  { title: "أوقاف الأجهزة الطبية", desc: "تجهيز المرافق الصحية بالأجهزة الطبية الحديثة لخدمة المجتمع.", Icon: HeartPulse },
+  { title: "أوقاف الأجهزة الطبية", desc: "تجهيز المرافق الصحية بالأجهزة الطبية الحديثة لخدمة المجتمع.", Icon: Activity },
   { title: "أوقاف استثمارية", desc: "مشاريع استثمارية تدر عائداً مستداماً لدعم البرامج الصحية الوقفية.", Icon: TrendingUp },
 ];
 
@@ -290,7 +290,7 @@ function NewsPreview() {
             <motion.article key={n.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
               className="overflow-hidden rounded-2xl bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl">
               <div className="flex h-44 items-center justify-center bg-gradient-hero">
-                <HeartPulse className="h-20 w-20 text-accent/60" strokeWidth={1.2} />
+                <img src="/logo-icon.png" alt="" className="h-20 w-20 object-contain opacity-70" />
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-3 text-xs">

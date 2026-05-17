@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Stethoscope, HeartPulse, TrendingUp, GraduationCap, FlaskConical } from "lucide-react";
+import { Stethoscope, Activity, TrendingUp, GraduationCap, FlaskConical } from "lucide-react";
 import { PageHeader } from "@/components/site/PageHeader";
 
 export const Route = createFileRoute("/programs")({
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/programs")({
 
 const PROGRAMS = [
   { title: "أوقاف تقدم الخدمات العلاجية", desc: "توفير الرعاية الصحية المباشرة للمرضى والفقراء والمحتاجين عبر شبكة من الشركاء.", Icon: Stethoscope },
-  { title: "أوقاف الأجهزة الطبية", desc: "تجهيز المرافق الصحية بالأجهزة الطبية الحديثة لخدمة المجتمع.", Icon: HeartPulse },
+  { title: "أوقاف الأجهزة الطبية", desc: "تجهيز المرافق الصحية بالأجهزة الطبية الحديثة لخدمة المجتمع.", Icon: Activity },
   { title: "أوقاف استثمارية", desc: "مشاريع استثمارية تدر عائداً مستداماً لدعم البرامج الصحية الوقفية.", Icon: TrendingUp },
   { title: "أوقاف التعليم الصحي", desc: "دعم برامج التعليم والتدريب الصحي ورفع كفاءة الكوادر العاملة.", Icon: GraduationCap },
   { title: "أوقاف البحث والتطوير", desc: "تمويل الأبحاث الطبية والمشاريع البحثية في القطاع الصحي.", Icon: FlaskConical },
