@@ -16,24 +16,62 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+const SlideArtCare = () => (
+  <svg viewBox="0 0 400 400" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <circle cx="200" cy="210" r="150" fill="#DCEAF8" />
+    <path d="M200 300s-95-58-95-128a58 58 0 0 1 95-44 58 58 0 0 1 95 44c0 70-95 128-95 128z" fill="#1E88E5"/>
+    <path d="M135 205h28l14-26 20 50 16-34 12 20h42" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+    <circle cx="320" cy="110" r="16" fill="#FFC857"/>
+    <circle cx="85" cy="305" r="11" fill="#26A69A"/>
+    <circle cx="320" cy="300" r="7" fill="#26A69A"/>
+  </svg>
+);
+
+const SlideArtClinic = () => (
+  <svg viewBox="0 0 400 400" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <circle cx="200" cy="210" r="150" fill="#DCEAF8"/>
+    <rect x="105" y="160" width="190" height="150" rx="12" fill="#1E88E5"/>
+    <rect x="130" y="190" width="38" height="44" rx="3" fill="#DCEAF8"/>
+    <rect x="181" y="190" width="38" height="44" rx="3" fill="#DCEAF8"/>
+    <rect x="232" y="190" width="38" height="44" rx="3" fill="#DCEAF8"/>
+    <rect x="181" y="252" width="38" height="58" fill="#fff"/>
+    <rect x="165" y="100" width="60" height="60" rx="10" fill="#fff" stroke="#26A69A" strokeWidth="6"/>
+    <path d="M195 115v30M180 130h30" stroke="#26A69A" strokeWidth="8" strokeLinecap="round"/>
+    <circle cx="325" cy="125" r="14" fill="#FFC857"/>
+    <circle cx="80" cy="290" r="10" fill="#26A69A"/>
+  </svg>
+);
+
+const SlideArtVision = () => (
+  <svg viewBox="0 0 400 400" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <circle cx="200" cy="210" r="150" fill="#DCEAF8"/>
+    <path d="M105 295h190l-38-120-52 72-32-42-68 90z" fill="#1E88E5"/>
+    <circle cx="278" cy="125" r="30" fill="#FFC857"/>
+    <path d="M95 305h210" stroke="#0B4A8F" strokeWidth="7" strokeLinecap="round"/>
+    <path d="M168 205l22 26 54-68" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+    <circle cx="90" cy="170" r="9" fill="#26A69A"/>
+    <circle cx="320" cy="280" r="7" fill="#26A69A"/>
+  </svg>
+);
+
 const SLIDES = [
   {
     badge: "جمعية وقفية",
     title: "معاً نبني مستقبلاً صحياً مستداماً",
     desc: "جمعية الأوقاف الصحية — أول جمعية صحية وقفية في المملكة",
-    Icon: Activity,
+    Art: SlideArtCare,
   },
   {
     badge: "مسار وقفي",
     title: "وقف الخدمات العلاجية",
     desc: "توفير الرعاية الصحية للمرضى والفقراء والمحتاجين",
-    Icon: Stethoscope,
+    Art: SlideArtClinic,
   },
   {
     badge: "رؤية 2030",
     title: "شريك رؤية 2030",
     desc: "نعمل على تنمية القطاع الصحي الوقفي تماشياً مع رؤية المملكة",
-    Icon: Building2,
+    Art: SlideArtVision,
   },
 ];
 
@@ -49,11 +87,11 @@ function HeroSlider() {
 
   const go = (n: number) => { setDir(n > i ? 1 : -1); setI((n + SLIDES.length) % SLIDES.length); };
   const slide = SLIDES[i];
-  const Icon = slide.Icon;
+  const Art = slide.Art;
 
   return (
     <section
-      className="relative h-[85vh] min-h-[560px] w-full overflow-hidden bg-gradient-hero"
+      className="relative h-[60vh] min-h-[480px] w-full overflow-hidden bg-gradient-hero md:h-[88vh]"
       onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
         if (touch.current == null) return;
@@ -96,7 +134,7 @@ function HeroSlider() {
             >
               <a href="https://store.hawqaf.org.sa/" target="_blank" rel="noopener noreferrer"
                 className="rounded-lg bg-gradient-brand px-6 py-3 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.03]">
-                تبرع الآن
+                تبرع في وقف صحي
               </a>
               <Link to="/programs" className="rounded-lg border-2 border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white">
                 اكتشف برامجنا
@@ -104,16 +142,14 @@ function HeroSlider() {
             </motion.div>
           </div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15, duration: 0.6 }}
+            initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15, duration: 0.6 }}
             className="relative flex h-64 w-64 items-center justify-center md:h-96 md:w-96"
           >
-            <div className="absolute inset-0 animate-pulse rounded-full bg-accent/10 blur-3xl" />
-            <div className="relative flex h-56 w-56 items-center justify-center rounded-3xl bg-white shadow-2xl md:h-80 md:w-80">
-              <Icon className="h-32 w-32 text-accent md:h-44 md:w-44" strokeWidth={1.2} />
-            </div>
+            <Art />
           </motion.div>
         </motion.div>
       </AnimatePresence>
+
 
       {/* Arrows (RTL: prev on right, next on left) */}
       <button aria-label="السابق" onClick={() => go(i + 1)}
