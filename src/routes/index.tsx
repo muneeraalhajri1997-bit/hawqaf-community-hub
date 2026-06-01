@@ -87,11 +87,11 @@ function HeroSlider() {
 
   const go = (n: number) => { setDir(n > i ? 1 : -1); setI((n + SLIDES.length) % SLIDES.length); };
   const slide = SLIDES[i];
-  const Icon = slide.Icon;
+  const Art = slide.Art;
 
   return (
     <section
-      className="relative h-[85vh] min-h-[560px] w-full overflow-hidden bg-gradient-hero"
+      className="relative h-[60vh] min-h-[480px] w-full overflow-hidden bg-gradient-hero md:h-[88vh]"
       onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
         if (touch.current == null) return;
@@ -134,7 +134,7 @@ function HeroSlider() {
             >
               <a href="https://store.hawqaf.org.sa/" target="_blank" rel="noopener noreferrer"
                 className="rounded-lg bg-gradient-brand px-6 py-3 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.03]">
-                تبرع الآن
+                تبرع في وقف صحي
               </a>
               <Link to="/programs" className="rounded-lg border-2 border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white">
                 اكتشف برامجنا
@@ -142,16 +142,14 @@ function HeroSlider() {
             </motion.div>
           </div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15, duration: 0.6 }}
+            initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15, duration: 0.6 }}
             className="relative flex h-64 w-64 items-center justify-center md:h-96 md:w-96"
           >
-            <div className="absolute inset-0 animate-pulse rounded-full bg-accent/10 blur-3xl" />
-            <div className="relative flex h-56 w-56 items-center justify-center rounded-3xl bg-white shadow-2xl md:h-80 md:w-80">
-              <Icon className="h-32 w-32 text-accent md:h-44 md:w-44" strokeWidth={1.2} />
-            </div>
+            <Art />
           </motion.div>
         </motion.div>
       </AnimatePresence>
+
 
       {/* Arrows (RTL: prev on right, next on left) */}
       <button aria-label="السابق" onClick={() => go(i + 1)}
