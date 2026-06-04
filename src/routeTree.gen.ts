@@ -20,6 +20,7 @@ import { Route as BoardRouteImport } from './routes/board'
 import { Route as AssemblyRouteImport } from './routes/assembly'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminBoardRouteImport } from './routes/admin.board'
 
@@ -78,6 +79,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/admin/news',
+  path: '/admin/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/volunteer': typeof VolunteerRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/volunteer': typeof VolunteerRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/volunteer': typeof VolunteerRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/volunteer'
     | '/admin/board'
     | '/admin/login'
+    | '/admin/news'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/volunteer'
     | '/admin/board'
     | '/admin/login'
+    | '/admin/news'
     | '/admin'
   id:
     | '__root__'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/volunteer'
     | '/admin/board'
     | '/admin/login'
+    | '/admin/news'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   VolunteerRoute: typeof VolunteerRoute
   AdminBoardRoute: typeof AdminBoardRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminNewsRoute: typeof AdminNewsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/news': {
+      id: '/admin/news'
+      path: '/admin/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   VolunteerRoute: VolunteerRoute,
   AdminBoardRoute: AdminBoardRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminNewsRoute: AdminNewsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
