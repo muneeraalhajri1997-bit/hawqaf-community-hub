@@ -19,6 +19,14 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BoardRouteImport } from './routes/board'
 import { Route as AssemblyRouteImport } from './routes/assembly'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminVolunteersRouteImport } from './routes/admin.volunteers'
+import { Route as AdminStatisticsRouteImport } from './routes/admin.statistics'
+import { Route as AdminProgramsRouteImport } from './routes/admin.programs'
+import { Route as AdminNewsRouteImport } from './routes/admin.news'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
+import { Route as AdminBoardRouteImport } from './routes/admin.board'
 
 const VolunteerRoute = VolunteerRouteImport.update({
   id: '/volunteer',
@@ -70,6 +78,46 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVolunteersRoute = AdminVolunteersRouteImport.update({
+  id: '/admin/volunteers',
+  path: '/admin/volunteers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminStatisticsRoute = AdminStatisticsRouteImport.update({
+  id: '/admin/statistics',
+  path: '/admin/statistics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProgramsRoute = AdminProgramsRouteImport.update({
+  id: '/admin/programs',
+  path: '/admin/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/admin/news',
+  path: '/admin/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminJobsRoute = AdminJobsRouteImport.update({
+  id: '/admin/jobs',
+  path: '/admin/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBoardRoute = AdminBoardRouteImport.update({
+  id: '/admin/board',
+  path: '/admin/board',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +130,14 @@ export interface FileRoutesByFullPath {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/board': typeof AdminBoardRoute
+  '/admin/jobs': typeof AdminJobsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/programs': typeof AdminProgramsRoute
+  '/admin/statistics': typeof AdminStatisticsRoute
+  '/admin/volunteers': typeof AdminVolunteersRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +150,14 @@ export interface FileRoutesByTo {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/board': typeof AdminBoardRoute
+  '/admin/jobs': typeof AdminJobsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/programs': typeof AdminProgramsRoute
+  '/admin/statistics': typeof AdminStatisticsRoute
+  '/admin/volunteers': typeof AdminVolunteersRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +171,14 @@ export interface FileRoutesById {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/board': typeof AdminBoardRoute
+  '/admin/jobs': typeof AdminJobsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/programs': typeof AdminProgramsRoute
+  '/admin/statistics': typeof AdminStatisticsRoute
+  '/admin/volunteers': typeof AdminVolunteersRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +193,14 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/board'
+    | '/admin/jobs'
+    | '/admin/login'
+    | '/admin/news'
+    | '/admin/programs'
+    | '/admin/statistics'
+    | '/admin/volunteers'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +213,14 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/board'
+    | '/admin/jobs'
+    | '/admin/login'
+    | '/admin/news'
+    | '/admin/programs'
+    | '/admin/statistics'
+    | '/admin/volunteers'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -145,6 +233,14 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/board'
+    | '/admin/jobs'
+    | '/admin/login'
+    | '/admin/news'
+    | '/admin/programs'
+    | '/admin/statistics'
+    | '/admin/volunteers'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +254,14 @@ export interface RootRouteChildren {
   StatisticsRoute: typeof StatisticsRoute
   TransparencyRoute: typeof TransparencyRoute
   VolunteerRoute: typeof VolunteerRoute
+  AdminBoardRoute: typeof AdminBoardRoute
+  AdminJobsRoute: typeof AdminJobsRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminNewsRoute: typeof AdminNewsRoute
+  AdminProgramsRoute: typeof AdminProgramsRoute
+  AdminStatisticsRoute: typeof AdminStatisticsRoute
+  AdminVolunteersRoute: typeof AdminVolunteersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +336,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/volunteers': {
+      id: '/admin/volunteers'
+      path: '/admin/volunteers'
+      fullPath: '/admin/volunteers'
+      preLoaderRoute: typeof AdminVolunteersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/statistics': {
+      id: '/admin/statistics'
+      path: '/admin/statistics'
+      fullPath: '/admin/statistics'
+      preLoaderRoute: typeof AdminStatisticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/programs': {
+      id: '/admin/programs'
+      path: '/admin/programs'
+      fullPath: '/admin/programs'
+      preLoaderRoute: typeof AdminProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/news': {
+      id: '/admin/news'
+      path: '/admin/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/jobs': {
+      id: '/admin/jobs'
+      path: '/admin/jobs'
+      fullPath: '/admin/jobs'
+      preLoaderRoute: typeof AdminJobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/board': {
+      id: '/admin/board'
+      path: '/admin/board'
+      fullPath: '/admin/board'
+      preLoaderRoute: typeof AdminBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +406,14 @@ const rootRouteChildren: RootRouteChildren = {
   StatisticsRoute: StatisticsRoute,
   TransparencyRoute: TransparencyRoute,
   VolunteerRoute: VolunteerRoute,
+  AdminBoardRoute: AdminBoardRoute,
+  AdminJobsRoute: AdminJobsRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminNewsRoute: AdminNewsRoute,
+  AdminProgramsRoute: AdminProgramsRoute,
+  AdminStatisticsRoute: AdminStatisticsRoute,
+  AdminVolunteersRoute: AdminVolunteersRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
