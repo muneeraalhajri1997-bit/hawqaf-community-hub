@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { LogOut, Users, Newspaper, Layers, BarChart3, Briefcase, HeartHandshake, Loader2 } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
 
-const NAV = [
+const NAV: { to: string; label: string; icon: typeof Users; exact?: boolean }[] = [
   { to: "/admin", label: "نظرة عامة", icon: BarChart3, exact: true },
   { to: "/admin/board", label: "مجلس الإدارة", icon: Users },
   { to: "/admin/news", label: "الأخبار والإعلام", icon: Newspaper },
@@ -12,7 +12,7 @@ const NAV = [
   { to: "/admin/statistics", label: "الإحصائيات", icon: BarChart3 },
   { to: "/admin/jobs", label: "الوظائف", icon: Briefcase },
   { to: "/admin/volunteers", label: "طلبات التطوع", icon: HeartHandshake },
-] as const;
+];
 
 export function AdminShell({ children, title }: { children: ReactNode; title: string }) {
   const navigate = useNavigate();
