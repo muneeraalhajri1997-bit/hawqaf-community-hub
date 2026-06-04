@@ -21,6 +21,7 @@ import { Route as AssemblyRouteImport } from './routes/assembly'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminBoardRouteImport } from './routes/admin.board'
 
 const VolunteerRoute = VolunteerRouteImport.update({
   id: '/volunteer',
@@ -82,6 +83,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBoardRoute = AdminBoardRouteImport.update({
+  id: '/admin/board',
+  path: '/admin/board',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/board': typeof AdminBoardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/board': typeof AdminBoardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/board': typeof AdminBoardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/board'
     | '/admin/login'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/board'
     | '/admin/login'
     | '/admin'
   id:
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/board'
     | '/admin/login'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   StatisticsRoute: typeof StatisticsRoute
   TransparencyRoute: typeof TransparencyRoute
   VolunteerRoute: typeof VolunteerRoute
+  AdminBoardRoute: typeof AdminBoardRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -272,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/board': {
+      id: '/admin/board'
+      path: '/admin/board'
+      fullPath: '/admin/board'
+      preLoaderRoute: typeof AdminBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -286,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   StatisticsRoute: StatisticsRoute,
   TransparencyRoute: TransparencyRoute,
   VolunteerRoute: VolunteerRoute,
+  AdminBoardRoute: AdminBoardRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
