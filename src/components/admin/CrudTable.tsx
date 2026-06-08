@@ -2,8 +2,9 @@ import { useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Plus, Pencil, Trash2, X } from "lucide-react";
+import { ImageUpload } from "./ImageUpload";
 
-export type FieldType = "text" | "textarea" | "number" | "boolean" | "select";
+export type FieldType = "text" | "textarea" | "number" | "boolean" | "select" | "image" | "date";
 export type FieldDef = {
   key: string;
   label: string;
