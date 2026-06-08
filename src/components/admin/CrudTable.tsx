@@ -2,8 +2,9 @@ import { useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Plus, Pencil, Trash2, X } from "lucide-react";
+import { ImageUpload } from "./ImageUpload";
 
-export type FieldType = "text" | "textarea" | "number" | "boolean" | "select";
+export type FieldType = "text" | "textarea" | "number" | "boolean" | "select" | "image" | "date";
 export type FieldDef = {
   key: string;
   label: string;
@@ -207,6 +208,20 @@ function EditDialog({
                   type="number"
                   value={form[f.key] ?? ""}
                   onChange={(e) => update(f.key, e.target.value === "" ? null : Number(e.target.value))}
+                  required={f.required}
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm"
+                />
+              ) : f.type === "image" ? (
+                <ImageUpload
+                  value={form[f.key] ?? null}
+                  onChange={(url) => update(f.key, url)}
+                  folder={f.key}
+                />
+              ) : f.type === "date" ? (
+                <input
+                  type="date"
+                  value={form[f.key] ? String(form[f.key]).slice(0, 10) : ""}
+                  onChange={(e) => update(f.key, e.target.value || null)}
                   required={f.required}
                   className="w-full rounded-lg border border-border px-3 py-2 text-sm"
                 />
