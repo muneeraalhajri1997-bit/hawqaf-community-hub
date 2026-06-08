@@ -23,6 +23,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminVolunteersRouteImport } from './routes/admin.volunteers'
 import { Route as AdminTransparencyRouteImport } from './routes/admin.transparency'
 import { Route as AdminStatisticsRouteImport } from './routes/admin.statistics'
+import { Route as AdminSlidesRouteImport } from './routes/admin.slides'
 import { Route as AdminProgramsRouteImport } from './routes/admin.programs'
 import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -99,6 +100,11 @@ const AdminStatisticsRoute = AdminStatisticsRouteImport.update({
   path: '/admin/statistics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSlidesRoute = AdminSlidesRouteImport.update({
+  id: '/admin/slides',
+  path: '/admin/slides',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProgramsRoute = AdminProgramsRouteImport.update({
   id: '/admin/programs',
   path: '/admin/programs',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/programs': typeof AdminProgramsRoute
+  '/admin/slides': typeof AdminSlidesRoute
   '/admin/statistics': typeof AdminStatisticsRoute
   '/admin/transparency': typeof AdminTransparencyRoute
   '/admin/volunteers': typeof AdminVolunteersRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/programs': typeof AdminProgramsRoute
+  '/admin/slides': typeof AdminSlidesRoute
   '/admin/statistics': typeof AdminStatisticsRoute
   '/admin/transparency': typeof AdminTransparencyRoute
   '/admin/volunteers': typeof AdminVolunteersRoute
@@ -184,6 +192,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/programs': typeof AdminProgramsRoute
+  '/admin/slides': typeof AdminSlidesRoute
   '/admin/statistics': typeof AdminStatisticsRoute
   '/admin/transparency': typeof AdminTransparencyRoute
   '/admin/volunteers': typeof AdminVolunteersRoute
@@ -207,6 +216,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/programs'
+    | '/admin/slides'
     | '/admin/statistics'
     | '/admin/transparency'
     | '/admin/volunteers'
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/programs'
+    | '/admin/slides'
     | '/admin/statistics'
     | '/admin/transparency'
     | '/admin/volunteers'
@@ -249,6 +260,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/programs'
+    | '/admin/slides'
     | '/admin/statistics'
     | '/admin/transparency'
     | '/admin/volunteers'
@@ -271,6 +283,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
   AdminProgramsRoute: typeof AdminProgramsRoute
+  AdminSlidesRoute: typeof AdminSlidesRoute
   AdminStatisticsRoute: typeof AdminStatisticsRoute
   AdminTransparencyRoute: typeof AdminTransparencyRoute
   AdminVolunteersRoute: typeof AdminVolunteersRoute
@@ -377,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStatisticsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/slides': {
+      id: '/admin/slides'
+      path: '/admin/slides'
+      fullPath: '/admin/slides'
+      preLoaderRoute: typeof AdminSlidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/programs': {
       id: '/admin/programs'
       path: '/admin/programs'
@@ -431,6 +451,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
   AdminProgramsRoute: AdminProgramsRoute,
+  AdminSlidesRoute: AdminSlidesRoute,
   AdminStatisticsRoute: AdminStatisticsRoute,
   AdminTransparencyRoute: AdminTransparencyRoute,
   AdminVolunteersRoute: AdminVolunteersRoute,
@@ -439,3 +460,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
