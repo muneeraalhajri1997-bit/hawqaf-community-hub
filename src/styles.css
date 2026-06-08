@@ -1,8 +1,6 @@
 @import "tailwindcss" source(none);
-@source "../src";
 @import "tw-animate-css";
-
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+@source "../src";
 
 @theme inline {
   --font-sans: 'Tajawal', 'IBM Plex Sans Arabic', system-ui, sans-serif;
