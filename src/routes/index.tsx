@@ -111,6 +111,12 @@ function HeroSlider() {
 
   const go = (n: number) => { setDir(n > i ? 1 : -1); setI((n + slidesCount) % slidesCount); };
 
+  const dbSlide = useDb ? dbSlides![i] : null;
+  const fbSlide = !useDb ? SLIDES[i] : null;
+  const Art = fbSlide?.Art;
+  const badge = useDb ? "" : fbSlide!.badge;
+  const title = useDb ? dbSlide!.title ?? "" : fbSlide!.title;
+  const desc = useDb ? dbSlide!.description ?? "" : fbSlide!.desc;
 
   return (
     <section
@@ -119,7 +125,7 @@ function HeroSlider() {
       onTouchEnd={(e) => {
         if (touch.current == null) return;
         const dx = e.changedTouches[0].clientX - touch.current;
-        if (Math.abs(dx) > 50) go(dx > 0 ? i + 1 : i - 1); // RTL: swipe right = next
+        if (Math.abs(dx) > 50) go(dx > 0 ? i + 1 : i - 1);
         touch.current = null;
       }}
     >
@@ -133,24 +139,28 @@ function HeroSlider() {
           className="absolute inset-0 mx-auto flex max-w-7xl flex-col items-center justify-center gap-10 px-6 md:flex-row md:gap-16"
         >
           <div className="flex-1 text-center md:text-right">
-            <motion.span
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-bold text-accent shadow-sm"
-            >
-              {slide.badge}
-            </motion.span>
+            {badge && (
+              <motion.span
+                initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-bold text-accent shadow-sm"
+              >
+                {badge}
+              </motion.span>
+            )}
             <motion.h1
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="mt-5 text-3xl font-extrabold leading-tight md:text-5xl lg:text-6xl"
             >
-              {slide.title}
+              {title}
             </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="mt-5 text-base text-muted-foreground md:text-lg"
-            >
-              {slide.desc}
-            </motion.p>
+            {desc && (
+              <motion.p
+                initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                className="mt-5 text-base text-muted-foreground md:text-lg"
+              >
+                {desc}
+              </motion.p>
+            )}
             <motion.div
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
               className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start"
@@ -168,29 +178,38 @@ function HeroSlider() {
             initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15, duration: 0.6 }}
             className="relative flex h-64 w-64 items-center justify-center md:h-96 md:w-96"
           >
-            <Art />
+            {useDb ? (
+              dbSlide!.image_url ? (
+                <img src={dbSlide!.image_url} alt={dbSlide!.title ?? ""} className="h-full w-full rounded-3xl object-cover shadow-xl" />
+              ) : (
+                <img src="/logo-icon.png" alt="" className="h-32 w-32 object-contain opacity-80" />
+              )
+            ) : (
+              Art && <Art />
+            )}
           </motion.div>
         </motion.div>
       </AnimatePresence>
 
+      {slidesCount > 1 && (
+        <>
+          <button aria-label="السابق" onClick={() => go(i + 1)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-3 text-primary shadow-md backdrop-blur transition-transform hover:scale-110">
+            <ChevronRight className="h-5 w-5" />
+          </button>
+          <button aria-label="التالي" onClick={() => go(i - 1)}
+            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-3 text-primary shadow-md backdrop-blur transition-transform hover:scale-110">
+            <ChevronLeft className="h-5 w-5" />
+          </button>
 
-      {/* Arrows (RTL: prev on right, next on left) */}
-      <button aria-label="السابق" onClick={() => go(i + 1)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-3 text-primary shadow-md backdrop-blur transition-transform hover:scale-110">
-        <ChevronRight className="h-5 w-5" />
-      </button>
-      <button aria-label="التالي" onClick={() => go(i - 1)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-3 text-primary shadow-md backdrop-blur transition-transform hover:scale-110">
-        <ChevronLeft className="h-5 w-5" />
-      </button>
-
-      {/* Dots */}
-      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
-        {SLIDES.map((_, idx) => (
-          <button key={idx} onClick={() => go(idx)} aria-label={`Slide ${idx + 1}`}
-            className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-accent" : "w-2.5 bg-primary/30"}`} />
-        ))}
-      </div>
+          <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
+            {Array.from({ length: slidesCount }).map((_, idx) => (
+              <button key={idx} onClick={() => go(idx)} aria-label={`Slide ${idx + 1}`}
+                className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-accent" : "w-2.5 bg-primary/30"}`} />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }
