@@ -20,20 +20,22 @@ type BoardMember = {
   name: string;
   role: string;
   bio: string | null;
+  image_url: string | null;
+  order_index: number | null;
 };
-
-async function fetchBoardMembers(): Promise<BoardMember[]> {
-  const { data, error } = await supabase
-    .from("board_members")
-    .select("id, name, role, bio");
-  if (error) throw error;
-  return (data ?? []) as BoardMember[];
-}
 
 function BoardPage() {
   const { data: members, isLoading, error } = useQuery({
-    queryKey: ["board_members"],
-    queryFn: fetchBoardMembers,
+    queryKey: ["public", "board_members"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("board_members")
+        .select("id, name, role, bio, image_url, order_index")
+        .eq("is_current", true)
+        .order("order_index", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as BoardMember[];
+    },
   });
 
   return (
@@ -42,7 +44,6 @@ function BoardPage() {
 
       <section className="bg-white py-12">
         <div className="mx-auto max-w-7xl px-4 lg:px-6">
-          {/* Honorary President */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="overflow-hidden rounded-3xl border-2 p-8 md:p-10"
             style={{ borderColor: "#B8972A", backgroundColor: "#FFFBF0" }}
@@ -58,20 +59,11 @@ function BoardPage() {
                 <h2 className="mt-3 text-xl font-extrabold md:text-2xl" style={{ color: "#7A6314" }}>
                   صاحب السمو الملكي الأمير سعود بن نايف بن عبدالعزيز آل سعود
                 </h2>
-                <p className="mt-2 text-sm md:text-base" style={{ color: "#7A6314" }}>
-                  أمير المنطقة الشرقية
-                </p>
+                <p className="mt-2 text-sm md:text-base" style={{ color: "#7A6314" }}>أمير المنطقة الشرقية</p>
               </div>
             </div>
           </motion.div>
 
-          {/* Term */}
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="mt-8 rounded-xl bg-light-bg p-4 text-center text-sm font-semibold text-primary">
-            الدورة الحالية: من 2024/11/20م إلى 2028/11/20م
-          </motion.div>
-
-          {/* Members grid */}
           {isLoading ? (
             <div className="mt-10 flex items-center justify-center py-16 text-muted-foreground">
               <Loader2 className="h-6 w-6 animate-spin" />
@@ -79,7 +71,7 @@ function BoardPage() {
             </div>
           ) : error ? (
             <div className="mt-10 rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center text-sm text-destructive">
-              تعذّر تحميل أعضاء المجلس. حاول مرة أخرى لاحقًا.
+              تعذّر تحميل أعضاء المجلس.
             </div>
           ) : !members || members.length === 0 ? (
             <div className="mt-10 rounded-xl border border-border bg-light-bg p-6 text-center text-sm text-muted-foreground">
@@ -89,13 +81,21 @@ function BoardPage() {
             <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {members.map((m, i) => (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 6) * 0.05 }}
-                  className="rounded-2xl border border-border bg-white p-6 text-right transition-all hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-xl">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-hero">
-                    <User className="h-7 w-7 text-accent" />
+                  className="overflow-hidden rounded-2xl border border-border bg-white text-right transition-all hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-xl">
+                  <div className="flex h-48 items-center justify-center overflow-hidden bg-gradient-hero">
+                    {m.image_url ? (
+                      <img src={m.image_url} alt={m.name} className="h-full w-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/60">
+                        <User className="h-8 w-8 text-accent" />
+                      </div>
+                    )}
                   </div>
-                  <span className="text-xs font-bold text-accent">{m.role}</span>
-                  <h3 className="mt-2 text-base font-bold leading-snug">{m.name}</h3>
-                  {m.bio && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{m.bio}</p>}
+                  <div className="p-6">
+                    <span className="text-xs font-bold text-accent">{m.role}</span>
+                    <h3 className="mt-2 text-base font-bold leading-snug">{m.name}</h3>
+                    {m.bio && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{m.bio}</p>}
+                  </div>
                 </motion.div>
               ))}
             </div>
