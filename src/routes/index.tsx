@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import {
   ChevronLeft, ChevronRight, Activity, Stethoscope, Building2,
   TrendingUp, Users, Award, Calendar, Shield, ArrowLeft,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
