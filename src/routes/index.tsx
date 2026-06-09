@@ -78,19 +78,39 @@ const SLIDES = [
   },
 ];
 
+type DbSlide = { id: string; title: string | null; description: string | null; image_url: string | null };
+
 function HeroSlider() {
+  const { data: dbSlides } = useQuery({
+    queryKey: ["public", "slides"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("slides")
+        .select("id,title,description,image_url")
+        .eq("is_active", true)
+        .order("order_index", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as DbSlide[];
+    },
+  });
+
+  const useDb = !!dbSlides && dbSlides.length > 0;
+  const slidesCount = useDb ? dbSlides!.length : SLIDES.length;
+
   const [i, setI] = useState(0);
   const [dir, setDir] = useState(1);
   const touch = useRef<number | null>(null);
 
   useEffect(() => {
-    const id = setInterval(() => { setDir(1); setI((p) => (p + 1) % SLIDES.length); }, 5000);
+    if (slidesCount <= 1) return;
+    const id = setInterval(() => { setDir(1); setI((p) => (p + 1) % slidesCount); }, 5000);
     return () => clearInterval(id);
-  }, []);
+  }, [slidesCount]);
 
-  const go = (n: number) => { setDir(n > i ? 1 : -1); setI((n + SLIDES.length) % SLIDES.length); };
-  const slide = SLIDES[i];
-  const Art = slide.Art;
+  useEffect(() => { setI(0); }, [useDb]);
+
+  const go = (n: number) => { setDir(n > i ? 1 : -1); setI((n + slidesCount) % slidesCount); };
+
 
   return (
     <section
