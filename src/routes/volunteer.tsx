@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { HandHeart, Users, Sparkles } from "lucide-react";
+import { HandHeart, Users, Sparkles, Loader2 } from "lucide-react";
 import { PageHeader } from "@/components/site/PageHeader";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/volunteer")({
   head: () => ({
@@ -16,6 +17,29 @@ export const Route = createFileRoute("/volunteer")({
 
 function VolunteerPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [form, setForm] = useState({ full_name: "", email: "", phone: "", interest: "", message: "" });
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setErrorMsg(null);
+    const message = form.interest ? `[${form.interest}] ${form.message}` : form.message;
+    const { error } = await supabase.from("volunteers").insert({
+      full_name: form.full_name,
+      email: form.email,
+      phone: form.phone,
+      message,
+    });
+    setSubmitting(false);
+    if (error) {
+      setErrorMsg("تعذر إرسال الطلب. حاول مرة أخرى لاحقاً.");
+      return;
+    }
+    setSubmitted(true);
+  };
+
   return (
     <>
       <PageHeader badge="كن جزءاً من العطاء" title="التطوع" subtitle="انضم لفريق المتطوعين وساهم في بناء مستقبل صحي مستدام." />
@@ -42,7 +66,7 @@ function VolunteerPage() {
 
           <motion.form
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+            onSubmit={onSubmit}
             className="rounded-3xl bg-light-bg p-7 shadow-sm"
           >
             <h2 className="text-xl font-bold">سجّل كمتطوع</h2>
@@ -55,18 +79,26 @@ function VolunteerPage() {
               </div>
             ) : (
               <div className="mt-5 space-y-4">
-                <input required placeholder="الاسم الكامل" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none transition-colors focus:border-accent" />
-                <input required type="email" placeholder="البريد الإلكتروني" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none transition-colors focus:border-accent" />
-                <input required type="tel" placeholder="رقم الجوال" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none transition-colors focus:border-accent" />
-                <select required className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent">
+                <input required value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+                  placeholder="الاسم الكامل" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none transition-colors focus:border-accent" />
+                <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="البريد الإلكتروني" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none transition-colors focus:border-accent" />
+                <input required type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="رقم الجوال" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none transition-colors focus:border-accent" />
+                <select required value={form.interest} onChange={(e) => setForm({ ...form, interest: e.target.value })}
+                  className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent">
                   <option value="">مجال التطوع</option>
                   <option>الفعاليات والمؤتمرات</option>
                   <option>التسويق والإعلام</option>
                   <option>التعليم والتدريب</option>
                   <option>الدعم الإداري</option>
                 </select>
-                <textarea rows={4} placeholder="نبذة عن خبراتك" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
-                <button type="submit" className="w-full rounded-lg bg-gradient-brand px-5 py-3 font-bold text-white transition-transform hover:scale-[1.02]">
+                <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  placeholder="نبذة عن خبراتك" className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
+                {errorMsg && <p className="text-sm text-destructive">{errorMsg}</p>}
+                <button type="submit" disabled={submitting}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-brand px-5 py-3 font-bold text-white transition-transform hover:scale-[1.02] disabled:opacity-60">
+                  {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                   إرسال الطلب
                 </button>
               </div>
