@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { LogOut, Users, Newspaper, Layers, BarChart3, Briefcase, HeartHandshake, Loader2, FileText, Images } from "lucide-react";
+import { LogOut, Users, Newspaper, Layers, BarChart3, Briefcase, HeartHandshake, Loader2, FileText, Images, UserCheck, CalendarCheck } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
 
 const NAV: { to: string; label: string; icon: typeof Users; exact?: boolean }[] = [
@@ -12,6 +12,8 @@ const NAV: { to: string; label: string; icon: typeof Users; exact?: boolean }[] 
   { to: "/admin/programs", label: "البرامج", icon: Layers },
   { to: "/admin/statistics", label: "الإحصائيات", icon: BarChart3 },
   { to: "/admin/transparency", label: "الوثائق والسياسات", icon: FileText },
+  { to: "/admin/assembly-members", label: "أعضاء الجمعية العمومية", icon: UserCheck },
+  { to: "/admin/assembly-meetings", label: "اجتماعات الجمعية", icon: CalendarCheck },
   { to: "/admin/jobs", label: "الوظائف", icon: Briefcase },
   { to: "/admin/volunteers", label: "طلبات التطوع", icon: HeartHandshake },
 ];

@@ -29,6 +29,8 @@ import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
 import { Route as AdminBoardRouteImport } from './routes/admin.board'
+import { Route as AdminAssemblyMembersRouteImport } from './routes/admin.assembly-members'
+import { Route as AdminAssemblyMeetingsRouteImport } from './routes/admin.assembly-meetings'
 
 const VolunteerRoute = VolunteerRouteImport.update({
   id: '/volunteer',
@@ -130,6 +132,16 @@ const AdminBoardRoute = AdminBoardRouteImport.update({
   path: '/admin/board',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAssemblyMembersRoute = AdminAssemblyMembersRouteImport.update({
+  id: '/admin/assembly-members',
+  path: '/admin/assembly-members',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAssemblyMeetingsRoute = AdminAssemblyMeetingsRouteImport.update({
+  id: '/admin/assembly-meetings',
+  path: '/admin/assembly-meetings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,6 +154,8 @@ export interface FileRoutesByFullPath {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/assembly-meetings': typeof AdminAssemblyMeetingsRoute
+  '/admin/assembly-members': typeof AdminAssemblyMembersRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -164,6 +178,8 @@ export interface FileRoutesByTo {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/assembly-meetings': typeof AdminAssemblyMeetingsRoute
+  '/admin/assembly-members': typeof AdminAssemblyMembersRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -187,6 +203,8 @@ export interface FileRoutesById {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/assembly-meetings': typeof AdminAssemblyMeetingsRoute
+  '/admin/assembly-members': typeof AdminAssemblyMembersRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -211,6 +229,8 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/assembly-meetings'
+    | '/admin/assembly-members'
     | '/admin/board'
     | '/admin/jobs'
     | '/admin/login'
@@ -233,6 +253,8 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/assembly-meetings'
+    | '/admin/assembly-members'
     | '/admin/board'
     | '/admin/jobs'
     | '/admin/login'
@@ -255,6 +277,8 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/assembly-meetings'
+    | '/admin/assembly-members'
     | '/admin/board'
     | '/admin/jobs'
     | '/admin/login'
@@ -278,6 +302,8 @@ export interface RootRouteChildren {
   StatisticsRoute: typeof StatisticsRoute
   TransparencyRoute: typeof TransparencyRoute
   VolunteerRoute: typeof VolunteerRoute
+  AdminAssemblyMeetingsRoute: typeof AdminAssemblyMeetingsRoute
+  AdminAssemblyMembersRoute: typeof AdminAssemblyMembersRoute
   AdminBoardRoute: typeof AdminBoardRoute
   AdminJobsRoute: typeof AdminJobsRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -432,6 +458,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBoardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/assembly-members': {
+      id: '/admin/assembly-members'
+      path: '/admin/assembly-members'
+      fullPath: '/admin/assembly-members'
+      preLoaderRoute: typeof AdminAssemblyMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/assembly-meetings': {
+      id: '/admin/assembly-meetings'
+      path: '/admin/assembly-meetings'
+      fullPath: '/admin/assembly-meetings'
+      preLoaderRoute: typeof AdminAssemblyMeetingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -446,6 +486,8 @@ const rootRouteChildren: RootRouteChildren = {
   StatisticsRoute: StatisticsRoute,
   TransparencyRoute: TransparencyRoute,
   VolunteerRoute: VolunteerRoute,
+  AdminAssemblyMeetingsRoute: AdminAssemblyMeetingsRoute,
+  AdminAssemblyMembersRoute: AdminAssemblyMembersRoute,
   AdminBoardRoute: AdminBoardRoute,
   AdminJobsRoute: AdminJobsRoute,
   AdminLoginRoute: AdminLoginRoute,
@@ -460,13 +502,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
