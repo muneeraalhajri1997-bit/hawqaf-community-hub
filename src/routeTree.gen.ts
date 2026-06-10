@@ -29,6 +29,7 @@ import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
 import { Route as AdminBoardRouteImport } from './routes/admin.board'
+import { Route as AdminAssemblyMembersRouteImport } from './routes/admin.assembly-members'
 
 const VolunteerRoute = VolunteerRouteImport.update({
   id: '/volunteer',
@@ -130,6 +131,11 @@ const AdminBoardRoute = AdminBoardRouteImport.update({
   path: '/admin/board',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAssemblyMembersRoute = AdminAssemblyMembersRouteImport.update({
+  id: '/admin/assembly-members',
+  path: '/admin/assembly-members',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/assembly-members': typeof AdminAssemblyMembersRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/assembly-members': typeof AdminAssemblyMembersRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/statistics': typeof StatisticsRoute
   '/transparency': typeof TransparencyRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin/assembly-members': typeof AdminAssemblyMembersRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/jobs': typeof AdminJobsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/assembly-members'
     | '/admin/board'
     | '/admin/jobs'
     | '/admin/login'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/assembly-members'
     | '/admin/board'
     | '/admin/jobs'
     | '/admin/login'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/transparency'
     | '/volunteer'
+    | '/admin/assembly-members'
     | '/admin/board'
     | '/admin/jobs'
     | '/admin/login'
@@ -278,6 +290,7 @@ export interface RootRouteChildren {
   StatisticsRoute: typeof StatisticsRoute
   TransparencyRoute: typeof TransparencyRoute
   VolunteerRoute: typeof VolunteerRoute
+  AdminAssemblyMembersRoute: typeof AdminAssemblyMembersRoute
   AdminBoardRoute: typeof AdminBoardRoute
   AdminJobsRoute: typeof AdminJobsRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -432,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBoardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/assembly-members': {
+      id: '/admin/assembly-members'
+      path: '/admin/assembly-members'
+      fullPath: '/admin/assembly-members'
+      preLoaderRoute: typeof AdminAssemblyMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -446,6 +466,7 @@ const rootRouteChildren: RootRouteChildren = {
   StatisticsRoute: StatisticsRoute,
   TransparencyRoute: TransparencyRoute,
   VolunteerRoute: VolunteerRoute,
+  AdminAssemblyMembersRoute: AdminAssemblyMembersRoute,
   AdminBoardRoute: AdminBoardRoute,
   AdminJobsRoute: AdminJobsRoute,
   AdminLoginRoute: AdminLoginRoute,
