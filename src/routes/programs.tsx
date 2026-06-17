@@ -83,8 +83,8 @@ function ProgramsPage() {
                       {goal > 0 && (
                         <div className="mt-5">
                           <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
-                            <span>{raised.toLocaleString("ar-EG")} ر.س</span>
-                            <span>{goal.toLocaleString("ar-EG")} ر.س</span>
+                            <span>{raised.toLocaleString("en-US")} ر.س</span>
+                            <span>{goal.toLocaleString("en-US")} ر.س</span>
                           </div>
                           <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-light-bg">
                             <div className="h-full rounded-full bg-gradient-brand" style={{ width: `${pct}%` }} />
