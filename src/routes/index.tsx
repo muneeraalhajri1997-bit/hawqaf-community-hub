@@ -231,7 +231,7 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [inView, to]);
-  return <span ref={ref}>{n.toLocaleString("ar-EG")}{suffix}</span>;
+  return <span ref={ref}>{n.toLocaleString("en-US")}{suffix}</span>;
 }
 
 const STATS = [
@@ -270,7 +270,7 @@ function StatsBar() {
 
 function AboutSection() {
   return (
-    <section className="bg-light-bg py-16 md:py-24">
+    <section id="about" className="bg-light-bg py-16 md:py-24 scroll-mt-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mx-auto max-w-3xl text-center">
           <span className="text-sm font-bold text-accent">من نحن</span>
