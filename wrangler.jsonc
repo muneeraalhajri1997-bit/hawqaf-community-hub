@@ -1,9 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "hawqaf-community-hub",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "src/server.ts",
+  "main": "dist/server/server.js",
+  "assets": {
+    "directory": "dist/client"
+  },
   "vars": {
     "SUPABASE_URL": "https://rmhodsquodvcabzhqjau.supabase.co",
     "SUPABASE_PUBLISHABLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtaG9kc3F1b2R2Y2FiemhxamF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzOTE4MjksImV4cCI6MjA5Mzk2NzgyOX0.qVHngawWN5wj5IMipgZ5c7b55_p2IhXRAIw1BzddrS8"
