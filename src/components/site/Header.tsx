@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, Globe, Mail, Phone, Twitter, Instagram, Youtube, ChevronDown } from "lucide-react";
+import { Menu, X, Mail, Phone, Twitter, Instagram, Youtube, ChevronDown } from "lucide-react";
 
 type LeafItem = {
   label: string;
@@ -58,7 +58,6 @@ const NAV: NavItem[] = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState<"AR" | "EN">("AR");
   const [openDesktop, setOpenDesktop] = useState<string | null>(null);
   const [openMobile, setOpenMobile] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -171,14 +170,6 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setLang((l) => (l === "AR" ? "EN" : "AR"))}
-            className="hidden items-center gap-1 rounded-md border border-border px-2 py-1.5 text-xs font-semibold text-primary hover:bg-light-bg md:flex"
-            aria-label="Toggle language"
-          >
-            <Globe className="h-3.5 w-3.5" />
-            {lang}
-          </button>
           <a
             href="https://store.hawqaf.org.sa/"
             target="_blank"
