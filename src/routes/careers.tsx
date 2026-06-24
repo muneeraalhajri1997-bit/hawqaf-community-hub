@@ -29,14 +29,7 @@ type Job = {
 
 const EDUCATION_OPTIONS = ["ثانوية عامة", "دبلوم", "بكالوريوس", "ماجستير", "دكتوراه", "أخرى"];
 
-const emptyForm = {
-  full_name: "",
-  email: "",
-  phone: "",
-  education: "",
-  experience_years: "",
-  cover_letter: "",
-};
+const emptyForm = { full_name: "", email: "", phone: "", education: "", experience_years: "", cover_letter: "" };
 
 function ApplyForm({ job, onDone }: { job: Job; onDone: () => void }) {
   const [form, setForm] = useState(emptyForm);
@@ -53,43 +46,29 @@ function ApplyForm({ job, onDone }: { job: Job; onDone: () => void }) {
     e.preventDefault();
     setSubmitting(true);
     setErrorMsg(null);
-
     let cv_url: string | null = null;
-
     if (cvFile) {
-      const ext = cvFile.name.split(".").pop();
-      const path = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+      const path = `${Date.now()}_${Math.random().toString(36).slice(2)}.pdf`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("cvs")
-        .upload(path, cvFile);
+        .upload(path, cvFile, { contentType: "application/pdf", upsert: false });
       if (uploadError) {
-        setErrorMsg("تعذر رفع السيرة الذاتية. حاول مرة أخرى.");
+        setErrorMsg("تعذر رفع السيرة الذاتية. تأكد أن الملف PDF ولا يتجاوز 5MB.");
         setSubmitting(false);
         return;
       }
       const { data: { publicUrl } } = supabase.storage.from("cvs").getPublicUrl(uploadData.path);
       cv_url = publicUrl;
     }
-
     const payload = {
-      job_id: job.id,
-      job_title: job.title,
-      full_name: form.full_name,
-      email: form.email,
-      phone: form.phone,
-      education: form.education || null,
-      experience_years: form.experience_years || null,
-      cover_letter: form.cover_letter || null,
-      cv_url,
+      job_id: job.id, job_title: job.title,
+      full_name: form.full_name, email: form.email, phone: form.phone,
+      education: form.education || null, experience_years: form.experience_years || null,
+      cover_letter: form.cover_letter || null, cv_url,
     };
-
     const { error } = await supabase.from("job_applications").insert(payload);
     setSubmitting(false);
-    if (error) {
-      setErrorMsg("تعذر إرسال الطلب. حاول مرة أخرى لاحقاً.");
-      return;
-    }
-
+    if (error) { setErrorMsg("تعذر إرسال الطلب. حاول مرة أخرى لاحقاً."); return; }
     supabase.functions.invoke("send-email", { body: { type: "job_application", data: payload } }).catch(console.error);
     setSubmitted(true);
   };
@@ -108,44 +87,32 @@ function ApplyForm({ job, onDone }: { job: Job; onDone: () => void }) {
   return (
     <form onSubmit={onSubmit} className="space-y-4 rounded-xl bg-light-bg p-6">
       <div className="grid gap-4 md:grid-cols-2">
-        <input required placeholder="الاسم الكامل" value={form.full_name} onChange={set("full_name")}
-          className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
-        <input required type="email" placeholder="البريد الإلكتروني" value={form.email} onChange={set("email")}
-          className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
-        <input required placeholder="رقم الجوال" value={form.phone} onChange={set("phone")}
-          className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
-        <select value={form.education} onChange={set("education")}
-          className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent">
+        <input required placeholder="الاسم الكامل" value={form.full_name} onChange={set("full_name")} className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
+        <input required type="email" placeholder="البريد الإلكتروني" value={form.email} onChange={set("email")} className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
+        <input required placeholder="رقم الجوال" value={form.phone} onChange={set("phone")} className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
+        <select value={form.education} onChange={set("education")} className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent">
           <option value="">المؤهل العلمي</option>
           {EDUCATION_OPTIONS.map((o) => <option key={o}>{o}</option>)}
         </select>
-        <input placeholder="سنوات الخبرة" value={form.experience_years} onChange={set("experience_years")}
-          className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
+        <input placeholder="سنوات الخبرة" value={form.experience_years} onChange={set("experience_years")} className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
         <div>
-          <input ref={fileRef} type="file" accept=".pdf,.doc,.docx" className="hidden"
-            onChange={(e) => setCvFile(e.target.files?.[0] ?? null)} />
+          <input ref={fileRef} type="file" accept=".pdf,application/pdf" className="hidden" onChange={(e) => setCvFile(e.target.files?.[0] ?? null)} />
           {cvFile ? (
             <div className="flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2.5">
               <span className="flex-1 truncate text-sm text-right">{cvFile.name}</span>
-              <button type="button" onClick={() => { setCvFile(null); if (fileRef.current) fileRef.current.value = ""; }}>
-                <X className="h-4 w-4 text-muted-foreground" />
-              </button>
+              <button type="button" onClick={() => { setCvFile(null); if (fileRef.current) fileRef.current.value = ""; }}><X className="h-4 w-4 text-muted-foreground" /></button>
             </div>
           ) : (
-            <button type="button" onClick={() => fileRef.current?.click()}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-white px-4 py-2.5 text-sm text-muted-foreground hover:border-accent hover:text-accent">
-              <UploadCloud className="h-4 w-4" />
-              رفع السيرة الذاتية (PDF أو Word)
+            <button type="button" onClick={() => fileRef.current?.click()} className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-white px-4 py-2.5 text-sm text-muted-foreground hover:border-accent hover:text-accent">
+              <UploadCloud className="h-4 w-4" />رفع السيرة الذاتية (PDF فقط)
             </button>
           )}
         </div>
       </div>
-      <textarea placeholder="رسالة تعريفية (اختياري)" value={form.cover_letter} onChange={set("cover_letter")} rows={3}
-        className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
+      <textarea placeholder="رسالة تعريفية (اختياري)" value={form.cover_letter} onChange={set("cover_letter")} rows={3} className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-right outline-none focus:border-accent" />
       {errorMsg && <p className="text-sm text-destructive">{errorMsg}</p>}
       <div className="flex items-center gap-3">
-        <button type="submit" disabled={submitting}
-          className="flex items-center gap-2 rounded-lg bg-gradient-brand px-6 py-2.5 text-sm font-bold text-white shadow-md disabled:opacity-60">
+        <button type="submit" disabled={submitting} className="flex items-center gap-2 rounded-lg bg-gradient-brand px-6 py-2.5 text-sm font-bold text-white shadow-md disabled:opacity-60">
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
           {submitting ? "جاري الإرسال..." : "إرسال الطلب"}
         </button>
@@ -157,7 +124,6 @@ function ApplyForm({ job, onDone }: { job: Job; onDone: () => void }) {
 
 function CareersPage() {
   const [openJobId, setOpenJobId] = useState<string | null>(null);
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["public", "jobs"],
     queryFn: async () => {
@@ -166,7 +132,6 @@ function CareersPage() {
       return ((data ?? []) as Job[]).filter((j) => j.is_active === undefined || j.is_active === null || j.is_active === true);
     },
   });
-
   return (
     <>
       <PageHeader badge="انضم لفريقنا" title="الوظائف" subtitle="نبحث عن كوادر شغوفة لصناعة الأثر في القطاع الصحي الوقفي." />
@@ -180,13 +145,10 @@ function CareersPage() {
             <p className="text-center text-muted-foreground">لا توجد وظائف شاغرة حالياً.</p>
           ) : (
             data.map((j, i) => (
-              <motion.div key={j.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
-                className="rounded-2xl border border-border bg-white p-6 transition-all hover:border-accent/40 hover:shadow-lg">
+              <motion.div key={j.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="rounded-2xl border border-border bg-white p-6 transition-all hover:border-accent/40 hover:shadow-lg">
                 <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-hero">
-                      <Briefcase className="h-6 w-6 text-accent" />
-                    </div>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-hero"><Briefcase className="h-6 w-6 text-accent" /></div>
                     <div>
                       <h3 className="text-lg font-bold">{j.title}</h3>
                       <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
@@ -197,8 +159,7 @@ function CareersPage() {
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => setOpenJobId((id) => (id === j.id ? null : j.id))}
-                    className="shrink-0 rounded-lg bg-gradient-brand px-6 py-2.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.03]">
+                  <button onClick={() => setOpenJobId((id) => (id === j.id ? null : j.id))} className="shrink-0 rounded-lg bg-gradient-brand px-6 py-2.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.03]">
                     {openJobId === j.id ? "إغلاق النموذج" : "تقديم على الوظيفة"}
                   </button>
                 </div>
@@ -216,4 +177,4 @@ function CareersPage() {
       </section>
     </>
   );
-                                         }
+}
