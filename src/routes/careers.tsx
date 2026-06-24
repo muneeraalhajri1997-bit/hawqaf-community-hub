@@ -28,7 +28,6 @@ type Job = {
 };
 
 const EDUCATION_OPTIONS = ["ثانوية عامة", "دبلوم", "بكالوريوس", "ماجستير", "دكتوراه", "أخرى"];
-
 const emptyForm = { full_name: "", email: "", phone: "", education: "", experience_years: "", cover_letter: "" };
 
 function ApplyForm({ job, onDone }: { job: Job; onDone: () => void }) {
