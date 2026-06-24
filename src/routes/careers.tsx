@@ -47,17 +47,15 @@ function ApplyForm({ job, onDone }: { job: Job; onDone: () => void }) {
     setErrorMsg(null);
     let cv_url: string | null = null;
     if (cvFile) {
-      const path = `${Date.now()}_${Math.random().toString(36).slice(2)}.pdf`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("cvs")
-        .upload(path, cvFile, { contentType: "application/pdf", upsert: false });
-      if (uploadError) {
+      const fd = new FormData();
+      fd.append("file", cvFile);
+      const { data: uploadResp, error: uploadError } = await supabase.functions.invoke("upload-cv", { body: fd });
+      if (uploadError || !uploadResp?.url) {
         setErrorMsg("تعذر رفع السيرة الذاتية. تأكد أن الملف PDF ولا يتجاوز 5MB.");
         setSubmitting(false);
         return;
       }
-      const { data: { publicUrl } } = supabase.storage.from("cvs").getPublicUrl(uploadData.path);
-      cv_url = publicUrl;
+      cv_url = uploadResp.url;
     }
     const payload = {
       job_id: job.id, job_title: job.title,
