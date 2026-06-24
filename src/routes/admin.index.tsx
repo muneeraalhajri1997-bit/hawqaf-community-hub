@@ -2,7 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Newspaper, Layers, Briefcase, HeartHandshake, BarChart3, MessageSquare, ClipboardList } from "lucide-react";
+import {
+  Users, Newspaper, Layers, Briefcase, HeartHandshake,
+  BarChart3, MessageSquare, ClipboardList, Images,
+} from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "لوحة الإدارة" }] }),
@@ -10,6 +13,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 const CARDS: { table: string; label: string; to: string; icon: typeof Users }[] = [
+  { table: "slides", label: "السلايدر", to: "/admin/slides", icon: Images },
   { table: "board_members", label: "أعضاء المجلس", to: "/admin/board", icon: Users },
   { table: "news", label: "الأخبار", to: "/admin/news", icon: Newspaper },
   { table: "programs", label: "البرامج", to: "/admin/programs", icon: Layers },
