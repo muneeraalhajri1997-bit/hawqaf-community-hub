@@ -333,9 +333,6 @@ function ProgramsPreview() {
               </div>
               <h3 className="text-lg font-bold">{p.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
-              <div className="mt-5 flex items-center gap-1 text-sm font-bold text-accent opacity-0 transition-opacity group-hover:opacity-100">
-                المزيد <ArrowLeft className="h-4 w-4" />
-              </div>
             </motion.div>
           ))}
         </div>
@@ -344,13 +341,38 @@ function ProgramsPreview() {
   );
 }
 
-const NEWS = [
+type DbNews = {
+  id: string;
+  title: string;
+  excerpt: string | null;
+  category: string | null;
+  image_url: string | null;
+  published_at: string | null;
+};
+
+const FALLBACK_NEWS = [
   { tag: "إعلان", date: "10 مايو 2026", title: "إطلاق وقف الأجهزة الطبية المتقدمة", desc: "توقيع شراكة استراتيجية لتجهيز أربع مستشفيات في المنطقة الشرقية." },
   { tag: "فعالية", date: "28 أبريل 2026", title: "ملتقى الأوقاف الصحية السنوي 2026", desc: "تنظيم الجمعية لملتقاها السنوي بحضور مسؤولين من القطاع الصحي." },
   { tag: "تقرير", date: "15 أبريل 2026", title: "نتائج البرامج الوقفية للربع الأول", desc: "أكثر من 12,000 مستفيد خلال الربع الأول من العام الجاري." },
 ];
 
 function NewsPreview() {
+  const { data: dbNews } = useQuery({
+    queryKey: ["public", "news", "preview"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("news")
+        .select("id,title,excerpt,category,image_url,published_at")
+        .eq("is_published", true)
+        .order("published_at", { ascending: false })
+        .limit(3);
+      if (error) throw error;
+      return (data ?? []) as DbNews[];
+    },
+  });
+
+  const hasDb = !!dbNews && dbNews.length > 0;
+
   return (
     <section className="bg-light-bg py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-6">
@@ -364,22 +386,43 @@ function NewsPreview() {
           </Link>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {NEWS.map((n, i) => (
-            <motion.article key={n.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-              className="overflow-hidden rounded-2xl bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl">
-              <div className="flex h-44 items-center justify-center bg-gradient-hero">
-                <img src="/logo-icon.png" alt="" className="h-20 w-20 object-contain opacity-70" />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center gap-3 text-xs">
-                  <span className="rounded-full bg-accent/10 px-2.5 py-1 font-bold text-accent">{n.tag}</span>
-                  <span className="text-muted-foreground">{n.date}</span>
-                </div>
-                <h3 className="mt-3 text-lg font-bold leading-snug">{n.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{n.desc}</p>
-              </div>
-            </motion.article>
-          ))}
+          {hasDb
+            ? dbNews!.map((n, i) => (
+                <motion.article key={n.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  className="overflow-hidden rounded-2xl bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl">
+                  <div className="flex h-44 items-center justify-center overflow-hidden bg-gradient-hero">
+                    {n.image_url ? (
+                      <img src={n.image_url} alt={n.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <img src="/logo-icon.png" alt="" className="h-20 w-20 object-contain opacity-70" />
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 text-xs">
+                      {n.category && <span className="rounded-full bg-accent/10 px-2.5 py-1 font-bold text-accent">{n.category}</span>}
+                      {n.published_at && <span className="text-muted-foreground">{new Date(n.published_at).toLocaleDateString("ar-SA", { year: "numeric", month: "long", day: "numeric" })}</span>}
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold leading-snug">{n.title}</h3>
+                    {n.excerpt && <p className="mt-2 text-sm text-muted-foreground">{n.excerpt}</p>}
+                  </div>
+                </motion.article>
+              ))
+            : FALLBACK_NEWS.map((n, i) => (
+                <motion.article key={n.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  className="overflow-hidden rounded-2xl bg-white transition-all hover:-translate-y-1.5 hover:shadow-xl">
+                  <div className="flex h-44 items-center justify-center bg-gradient-hero">
+                    <img src="/logo-icon.png" alt="" className="h-20 w-20 object-contain opacity-70" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 text-xs">
+                      <span className="rounded-full bg-accent/10 px-2.5 py-1 font-bold text-accent">{n.tag}</span>
+                      <span className="text-muted-foreground">{n.date}</span>
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold leading-snug">{n.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{n.desc}</p>
+                  </div>
+                </motion.article>
+              ))}
         </div>
       </div>
     </section>
