@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ChevronLeft, ChevronRight, Activity, Stethoscope, Building2,
   TrendingUp, Users, Award, Calendar, Shield, ArrowLeft,
+  HeartHandshake, Microscope, Hospital, Star,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -234,19 +235,51 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   return <span ref={ref}>{n.toLocaleString("en-US")}{suffix}</span>;
 }
 
-const STATS = [
+// Map icon name strings to Lucide components
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Users, Building2, Calendar, Award, TrendingUp, Activity,
+  Stethoscope, HeartHandshake, Microscope, Hospital, Star, Shield,
+};
+
+const FALLBACK_STATS = [
   { label: "المرضى المستفيدون", value: 50000, prefix: "+", Icon: Users },
   { label: "المشاريع الوقفية", value: 120, prefix: "+", Icon: Building2 },
   { label: "سنوات الخبرة", value: 15, prefix: "", Icon: Calendar },
   { label: "الشراكات الاستراتيجية", value: 40, prefix: "+", Icon: Award },
 ];
 
+type DbStat = { id: string; label: string; value: string; icon: string | null; order_index: number | null };
+
 function StatsBar() {
+  const { data: dbStats } = useQuery({
+    queryKey: ["public", "statistics"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("statistics")
+        .select("id,label,value,icon,order_index")
+        .order("order_index", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as DbStat[];
+    },
+  });
+
+  const hasDb = !!dbStats && dbStats.length > 0;
+
+  const items = hasDb
+    ? dbStats!.map((s) => {
+        const raw = s.value ?? "0";
+        const prefix = raw.startsWith("+") ? "+" : "";
+        const num = parseInt(raw.replace(/[^0-9]/g, ""), 10) || 0;
+        const Icon = (s.icon && ICON_MAP[s.icon]) ? ICON_MAP[s.icon] : Award;
+        return { label: s.label, value: num, prefix, Icon };
+      })
+    : FALLBACK_STATS;
+
   return (
     <section className="bg-white py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4 lg:px-6">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {STATS.map((s, i) => (
+          {items.map((s, i) => (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 20 }}
